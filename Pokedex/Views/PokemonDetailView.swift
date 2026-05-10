@@ -31,7 +31,7 @@ struct PokemonDetailView: View {
                 
             }
             
-            Text(model.searchedPokemon.name ?? "")
+            Text(model.searchedPokemon.name?.capitalized ?? "")
                 .font(.title)
                 .bold()
                 .padding(.vertical, 8)

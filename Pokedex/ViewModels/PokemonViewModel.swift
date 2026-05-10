@@ -32,4 +32,15 @@ class PokemonViewModel {
         
     }
     
+    func searchPokemon() {
+        
+        Task {
+            
+            searchedPokemon = await service.getPokemon(name: enteredPokemon)
+            isShown = true
+            
+        }
+        
+    }
+    
 }

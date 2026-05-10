@@ -41,10 +41,13 @@ struct MainView: View {
                             .padding(8)
                             .autocorrectionDisabled()
                             .background(.white)
+                            .onSubmit {
+                                model.searchPokemon()
+                            }
                         
                         Button {
                             
-                            // TODO: Trigger a search in the future
+                            model.searchPokemon()
                             
                         } label: {
                             
@@ -163,6 +166,7 @@ struct MainView: View {
         .sheet(isPresented: $model.isShown) {
             
             PokemonDetailView()
+                .presentationDetents([.medium])
             
         }
     }
