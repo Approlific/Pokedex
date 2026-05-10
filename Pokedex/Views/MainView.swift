@@ -28,10 +28,15 @@ struct MainView: View {
                 
                 VStack {
                     
-                    Text("Pokédex")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
+                    HStack {
+                        Image(systemName: "circle.circle.fill")
+                            .font(.title2)
+                        
+                        Text("Pokédex")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundStyle(.white)
                     
                     HStack {
                         
@@ -70,14 +75,15 @@ struct MainView: View {
                 
                 ForEach(pokemon, id: \.id) { p in
                     HStack {
-                        if let urlString = p.sprites?.frontDefault, let url = URL(string: urlString) {
-                            AsyncImage(url: url) { image in
-                                image.resizable().scaledToFit().frame(width: 96, height: 96)
-                            } placeholder: {
-                                ProgressView()
-                            }
+                        
+                        if let url = p.sprites?.frontDefault {
+                         
+                            AsyncImage(url: URL(string: url))
+                            
                         } else {
-                            Rectangle().fill(Color.clear).frame(width: 48, height: 48)
+                            
+                            // TODO: Placeholder image
+                            
                         }
                         
                         Text((p.name ?? "").capitalized)
