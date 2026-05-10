@@ -33,12 +33,12 @@ struct DataService {
     func getPokemon(name: String) async -> Pokemon {
         
         // 1. URL
-        let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(name)")
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(name)") else { return Pokemon(id: 0, name: "Pokemon Not Found") }
         
         do {
             
             // URLSession
-            let (data, _) = try await URLSession.shared.data(from: url!)
+            let (data, _) = try await URLSession.shared.data(from: url)
             
             // Parse JSON
             let decoder = JSONDecoder()

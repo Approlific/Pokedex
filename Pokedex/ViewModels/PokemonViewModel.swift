@@ -11,10 +11,12 @@ import Foundation
 class PokemonViewModel {
     
     var enteredPokemon: String = ""
+    var searchedPokemon: Pokemon = Pokemon(id: 0, name: "Pokemon Not Found")
     var pokeList: ListItem = ListItem()
     var pokemon: [Pokemon] = []
     var toggleBackOff = true
     var offset = 0
+    var isShown = false
     
     let limit = 10
     let service = DataService()

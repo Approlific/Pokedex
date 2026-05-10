@@ -43,7 +43,9 @@ struct MainView: View {
                             .background(.white)
                         
                         Button {
-                            // Trigger a search in the future
+                            
+                            // TODO: Trigger a search in the future
+                            
                         } label: {
                             
                             ZStack {
@@ -86,6 +88,13 @@ struct MainView: View {
                         Text((p.name ?? "").capitalized)
                     }
                     .listRowSeparator(.hidden)
+                    .onTapGesture {
+                        
+                        model.searchedPokemon = p
+                        model.isShown = true
+                        
+                    }
+                    
                 }
                 
             }
@@ -95,7 +104,6 @@ struct MainView: View {
                 
                 Button {
                     
-                    // TODO: back button functionality
                     if model.offset - model.limit <= 0 {
                         
                         model.toggleBackOff = true
@@ -122,7 +130,6 @@ struct MainView: View {
                 
                 Button {
                     
-                    // TODO: forward button functionality
                     model.offset += model.limit
                     
                     Task {
@@ -151,6 +158,11 @@ struct MainView: View {
         .task {
             
             model.getPokemon()
+            
+        }
+        .sheet(isPresented: $model.isShown) {
+            
+            PokemonDetailView()
             
         }
     }
