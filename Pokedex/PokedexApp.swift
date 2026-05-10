@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct PokedexApp: App {
+    
+    @State var model = PokemonViewModel()
+    
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(model)
         }
     }
 }

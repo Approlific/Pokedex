@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct DataService {
     
@@ -56,15 +57,15 @@ struct DataService {
         
     }
     
-    func getPokemonList() async -> ListItem {
+    func getPokemonList(limit: Int, offset: Int) async -> ListItem {
         
         // 1. URL
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/?limit=10&offset=0") else { return ListItem() }
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/?limit=\(limit)&offset=\(offset)") else { return ListItem() }
         
         do {
                 
             // 3. URLSession
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, _) = try await URLSession.shared.data(from: url)
             
             // Parse JSON
             let decoder = JSONDecoder()

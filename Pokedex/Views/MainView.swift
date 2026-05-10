@@ -9,14 +9,11 @@ import SwiftUI
 
 struct MainView: View {
     
-    @State var enteredPokemon: String = ""
-    @State var pokeList: ListItem = ListItem()
-    @State var pokemon: [Pokemon] = []
-    
-    
-    let service = DataService()
+    @Environment(PokemonViewModel.self) var model
     
     var body: some View {
+        
+        @Bindable var model = model
         
         VStack {
             
@@ -40,7 +37,7 @@ struct MainView: View {
                     
                     HStack {
                         
-                        TextField("Enter Pokemon name", text: $enteredPokemon)
+                        TextField("Enter Pokemon name", text: $model.enteredPokemon)
                             .padding(8)
                             .autocorrectionDisabled()
                             .background(.white)
@@ -73,7 +70,7 @@ struct MainView: View {
             
             List {
                 
-                ForEach(pokemon, id: \.id) { p in
+                ForEach(model.pokemon, id: \.id) { p in
                     HStack {
                         
                         if let url = p.sprites?.frontDefault {
@@ -99,6 +96,19 @@ struct MainView: View {
                 Button {
                     
                     // TODO: back button functionality
+                    if model.offset - model.limit <= 0 {
+                        
+                        model.toggleBackOff = true
+                        
+                    }
+                        
+                    model.offset -= model.limit
+                    
+                    Task {
+                        
+                        model.getPokemon()
+                        
+                    }
                     
                 } label: {
                     
@@ -106,12 +116,26 @@ struct MainView: View {
                     Text("Back")
                     
                 }
+                .disabled(model.toggleBackOff)
                 
                 Spacer()
                 
                 Button {
                     
                     // TODO: forward button functionality
+                    model.offset += model.limit
+                    
+                    Task {
+                        
+                        model.getPokemon()
+                        
+                    }
+                    
+                    if model.offset > 0 {
+                        
+                        model.toggleBackOff = false
+                        
+                    }
                     
                 } label: {
                     
@@ -126,8 +150,7 @@ struct MainView: View {
         }
         .task {
             
-            pokeList = await service.getPokemonList()
-            pokemon = await service.getPokemonFromList(list: pokeList)
+            model.getPokemon()
             
         }
     }
@@ -135,4 +158,5 @@ struct MainView: View {
 
 #Preview {
     MainView()
+        .environment(PokemonViewModel())
 }
